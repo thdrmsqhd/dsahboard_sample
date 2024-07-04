@@ -1,0 +1,121 @@
+Windows 환경에서 PC의 정보를 실시간으로 수집하고 제어하기 위해서는 다양한 시스템 정보와 제어 기능을 사용할 수 있습니다. 이러한 기능들은 Windows Management Instrumentation (WMI), Performance Counters, 그리고 PowerShell 등의 도구를 통해 접근할 수 있습니다.
+
+수집 가능한 정보
+CPU 정보
+
+사용률
+온도
+클럭 속도
+코어/스레드 수
+
+메모리 정보
+사용률
+사용 가능한 메모리
+전체 메모리 크기
+
+디스크 정보
+사용률
+읽기/쓰기 속도
+디스크 공간 (사용 중/사용 가능)
+디스크 상태 (SMART 상태)
+
+네트워크 정보
+네트워크 인터페이스 사용률
+업로드/다운로드 속도
+IP 주소
+네트워크 상태
+
+시스템 정보
+운영 체제 버전
+시스템 업타임
+설치된 소프트웨어 목록
+환경 변수
+
+GPU 정보
+사용률
+메모리 사용량
+온도
+제어 가능한 기능
+
+프로세스 관리
+프로세스 시작/종료
+우선 순위 변경
+특정 프로세스 모니터링 및 제어
+
+
+서비스 관리
+서비스 시작/중지
+서비스 상태 조회
+서비스 자동 시작 설정
+
+전원 관리
+시스템 종료/재부팅
+절전 모드 진입
+디스플레이 끄기/켜기
+
+네트워크 설정
+네트워크 어댑터 활성화/비활성화
+IP 주소 변경
+DNS 설정
+
+디스크 관리
+디스크 정리
+디스크 파티션 관리
+디스크 복구
+
+주요 도구 및 라이브러리
+
+Windows Management Instrumentation (WMI)
+WMI는 Windows 운영 체제의 다양한 내부 정보를 쿼리하고 조작할 수 있는 강력한 도구입니다.
+예: wmic cpu get loadpercentage
+
+PowerShell
+PowerShell은 다양한 시스템 관리 작업을 스크립팅할 수 있는 강력한 도구입니다.
+예: Get-Process, Get-Service, Restart-Computer
+
+Performance Counters
+성능 카운터를 통해 CPU, 메모리, 디스크 I/O 등 시스템 성능 데이터를 실시간으로 모니터링할 수 있습니다.
+
+Python Libraries
+psutil: CPU, 메모리, 디스크, 네트워크 등 시스템 정보를 수집할 수 있는 라이브러리
+wmi: WMI를 통해 Windows 시스템 정보를 수집 및 제어할 수 있는 라이브러리
+
+예제 코드
+Python과 psutil을 이용한 정보 수집 예제
+python
+코드 복사
+import psutil
+
+# CPU 정보
+cpu_usage = psutil.cpu_percent(interval=1)
+print(f"CPU 사용률: {cpu_usage}%")
+
+# 메모리 정보
+memory_info = psutil.virtual_memory()
+print(f"메모리 사용률: {memory_info.percent}%")
+print(f"사용 가능한 메모리: {memory_info.available / (1024 ** 2)} MB")
+
+# 디스크 정보
+disk_usage = psutil.disk_usage('/')
+print(f"디스크 사용률: {disk_usage.percent}%")
+print(f"사용 가능한 디스크 공간: {disk_usage.free / (1024 ** 3)} GB")
+
+# 네트워크 정보
+net_io = psutil.net_io_counters()
+print(f"업로드: {net_io.bytes_sent / (1024 ** 2)} MB")
+print(f"다운로드: {net_io.bytes_recv / (1024 ** 2)} MB")
+PowerShell을 이용한 정보 수집 예제
+powershell
+코드 복사
+# CPU 사용률
+Get-WmiObject -Query "select * from Win32_Processor" | Select-Object LoadPercentage
+
+# 메모리 사용률
+Get-WmiObject -Query "select * from Win32_OperatingSystem" | Select-Object FreePhysicalMemory,TotalVisibleMemorySize
+
+# 디스크 사용률
+Get-WmiObject -Query "select * from Win32_LogicalDisk" | Select-Object DeviceID,FreeSpace,Size
+
+# 네트워크 사용률
+Get-NetAdapterStatistics
+이와 같은 정보를 수집하고 제어하여 대시보드 스타일의 프로그램을 개발할 수 있습니다. 원하는 기능과 요구사항에 맞게 다양한 도구와 라이브러리를 조합하여 사용할 수 있습니다.
